@@ -1,13 +1,14 @@
 
-
 //src/server.js створіть функцію setupServer, в якій буде створюватись express сервер. Ця функція має в себе включати:
 import express from "express";
 import cors from "cors";
 import pino from "pino-http";
 
-import { getEnvVar } from "./utils/getEnvVar";
+import { getEnvVar } from "./utils/getEnvVar.js";
+import { getContacts, getContactsById } from "./services/contacts.js";
 
-const PORT = getEnvVar("PORT");
+// const PORT = getEnvVar("PORT", 3000);
+const PORT = Number(getEnvVar('PORT', 3000));
 export const setupServer = () => {
     const app = express();
 
@@ -53,8 +54,9 @@ export const setupServer = () => {
             message: error.message,
         });
     });
-    const port = Number(getEnvVar(PORT));
-    app.listen(port, () => console.log(`Server is running on port ${PORT}`));
+    // const port = Number(getEnvVar(PORT));
+
+    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 }
 
 // Обробку неіснуючих роутів (повертає статус 404 і відповідне повідомлення)
