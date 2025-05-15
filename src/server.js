@@ -1,5 +1,5 @@
 
-//src/server.js створіть функцію setupServer, в якій буде створюватись express сервер. Ця функція має в себе включати:
+// //src/server.js створіть функцію setupServer, в якій буде створюватись express сервер. Ця функція має в себе включати:
 import express from "express";
 import cors from "cors";
 import pino from "pino-http";
@@ -8,12 +8,12 @@ import { getEnvVar } from "./utils/getEnvVar.js";
 import { getContacts, getContactsById } from "./services/contacts.js";
 
 // const PORT = getEnvVar("PORT", 3000);
-const PORT = Number(getEnvVar('PORT', 27017));
+const PORT = Number(getEnvVar('PORT', 3000));
 export const setupServer = () => {
     const app = express();
 
     app.use(cors());
-    // app.use(express.json)
+    app.use(express.json())
     app.use(pino({
         transport: {
             target: "pino-pretty"
@@ -28,7 +28,8 @@ export const setupServer = () => {
         }); 
     });
     app.get("/contacts/:id", async(req, resp) => {
-        const data = await  getContactsById(id);
+        const { id } = req.params;
+        const data = await getContactsById(id);
         if(!data) {
             return resp.status(404).json({
                 status: 404,
@@ -65,3 +66,54 @@ export const setupServer = () => {
 // 5. При вдалому запуску сервера виводити в консоль рядок “Server is running on port {PORT}”, де {PORT} - це номер вашого порту.
 
 // Не забудьте вказати змінну оточення в файлі .env.example
+// const PORT = Number(getEnvVar('PORT', 3000));
+
+// export const setupServer = () => {
+//   const app = express();
+
+//   app.use(express.json());
+//   app.use(cors());
+
+//   app.use(pino({ transport: { target: 'pino-pretty' } }));
+
+//   app.get('/contacts', async (req, res, next) => {
+//     try {
+//       const contacts = await getContacts();
+//       res.status(200).json({
+//         status: 200,
+//         message: 'Successfully found contacts!',
+//         data: contacts,
+//       });
+//     } catch (error) {
+//       next(error);
+//     }
+//   });
+
+//   app.get('/contacts/:contactId', async (req, res, next) => {
+//     try {
+//       const { id } = req.params;
+//       const contact = await getContactsById(id);
+//       if (!contact) {
+//         res.status(404).json({
+//           message: 'Contact not found',
+//         });
+//         return;
+//       }
+//       res.status(200).json({
+//         status: 200,
+//         message: `Successfully found contact with id = ${id}!`,
+//         data: contact,
+//       });
+//     } catch (error) {
+//       next(error);
+//     }
+//   });
+
+//   app.use((req, res, next) => {
+//     res.status(404).json({ message: 'Not found' });
+//   });
+
+//   app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+//   });
+// };
