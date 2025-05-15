@@ -1,5 +1,6 @@
 // Імпортуйте і викличте у ньому функцію setupServer.
 // src/index.
+import dotenv from 'dotenv';
 import "dotenv/config";
 import { initMongoConnection } from "./db/initMongoConnection.js"
 import { setupServer } from "./server.js"
