@@ -1,7 +1,4 @@
 import ContactCollection from "../db/models/Contact.js";
-
-// export const getContacts = () => ContactCollection.find();
-// export const getContactsById = () => ContactCollection.findOne({_id:id})
 export const getContacts = async () => {
   const contacts = await ContactCollection.find();
   return contacts;
@@ -25,7 +22,7 @@ export const patchContact = async (_id, payload, options = {}) => {
   if (!rawResults || !rawResults.value) return null;
   return {
     data: rawResults.value,
-    isNew:Boolean(rawResults?.lastErrorObject?.upserted), ///,,,,,,,,,,,,,,,,,,,,,,,,???????
+    isNew:Boolean(rawResults?.lastErrorObject?.upserted),
     
   }
 }

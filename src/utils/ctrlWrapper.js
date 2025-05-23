@@ -8,16 +8,3 @@ export const ctrlWrapper = (controller) => {
       }
     };
 };
-  
-// teacher's version
-// export const ctrlWrapper = (controller) => {
-//     const func = async (req, resp, next) => {
-//         try {
-//             await controller(req, resp, next);
-//         }
-//         catch (error) {
-//             next(error)
-//         }
-//     }
-//     // return func;
-// };

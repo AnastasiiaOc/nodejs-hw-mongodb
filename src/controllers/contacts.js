@@ -2,12 +2,9 @@
 import { getContacts, getContactsById, createContact, patchContact, deleteContact } from "../services/contacts.js";
 import createHttpError from "http-errors";
 
-// винесіть код контролерів з файлу src/server.js до файлу src/controllers/contacts.js
     
-export const getContactsController = async (req, resp) => {   //+
+export const getContactsController = async (req, resp) => {  
     const data = await getContacts();
-  
-    // app.get("/contacts", async (req, resp) => {
         resp.json({
             status: 200,
             message: "Contacts are successfully found",
@@ -17,13 +14,9 @@ export const getContactsController = async (req, resp) => {   //+
 
 export const getContactsByIdController = async (req, resp, next) => {
 
-    // app.get("/contacts/:id", async(req, resp) => {
     const { id } = req.params;
     const data = await getContactsById(id);
     if (!data) {
-        // return resp.status(404).json({
-        //     status: 404,
-        //     message:`The contact with id =${id} is not found`
         throw createHttpError(404, 'Contact not found');
     };
     resp.json({
@@ -34,7 +27,7 @@ export const getContactsByIdController = async (req, resp, next) => {
 }
 
 export const createContactsController = async (req, resp, next) => {
-    //POST add
+//POST add
     const data = await createContact(req.body);
     resp.status(201).json({
         status: 201,
@@ -55,7 +48,7 @@ export const patchContactsController = async (req, resp, next) => {
     resp.json({
         status: 200,
         message: "Successfully patched a contact!",
-        data: result
+        data: result.data
     })
 }
     
