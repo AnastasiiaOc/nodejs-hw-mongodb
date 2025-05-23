@@ -1,5 +1,4 @@
 
-
 import express from "express";
 import cors from "cors";
 import pino from "pino-http";
@@ -10,6 +9,7 @@ import { notFoundHandler } from "./middlewares/notFoundHandler.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 const PORT = Number(getEnvVar('PORT', 3000));
+
 export const setupServer = () => {
     const app = express();
 
@@ -22,9 +22,10 @@ export const setupServer = () => {
     }));
 
     app.use("/contacts", contactsRouter);
-    //   app.use (notFoundHandler);
     app.use(notFoundHandler);
     app.use(errorHandler);
+    
+    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
     // app.get("/contacts", async (req, resp) => {   /////////////////////////////// routers
     //     const data = await getContacts();
     //     resp.json({
@@ -63,10 +64,6 @@ export const setupServer = () => {
     // });
     // const port = Number(getEnvVar(PORT));
     
-
-
-
-    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 }
 
 // винесіть код роутів з файлу src/server.js до файлу src/routers/contacts.js
