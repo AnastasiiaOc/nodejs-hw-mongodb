@@ -4,8 +4,7 @@ import mongoose from "mongoose";
 import { getEnvVar } from "../utils/getEnvVar.js";
 
 export const initMongoConnection = async() =>{
-    try{
-
+try{
 const user = getEnvVar("MONGODB_USER");
 const password = getEnvVar("MONGODB_PASSWORD");
 const url = getEnvVar("MONGODB_URL");
