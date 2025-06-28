@@ -33,13 +33,17 @@ export const getContactsByIdController = async (req, resp, next) => {
 
 export const createContactsController = async (req, resp, next) => {
 //POST add
-    const data = await createContact(req.body);
+    // const data = await createContact(req.body); used to be like this but userId added
+    const data = await createContact({ ...req.body, userId: req.user._id });
     resp.status(201).json({
         status: 201,
         message: "Successfully created a contact!",
         data,
     })
 }
+
+
+
 export const patchContactsController = async (req, resp, next) => {
     // PATCH
     const { id } = req.params;
