@@ -18,13 +18,3 @@ contactsRouter.delete("/:id", isValidId, ctrlWrapper(deleteContactController));
 
 
 export default contactsRouter;
-
-// 💡 Зверніть увагу! Коли ми приміняємо middleware таким чином (router.use(authenticate);), як вказано вище, вона будет примінятися до всіх роутів цього роутера. Тобто, вона відпрацює на всіх роутах, що починаються зі /contacts
-
-         
-// router.put(
-//   '/:studentId',
-//   isValidId, 
-//   validateBody(createStudentSchema),
-//   ctrlWrapper(upsertStudentController),
-// );
