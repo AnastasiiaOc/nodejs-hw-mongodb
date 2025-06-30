@@ -8,13 +8,16 @@ export const getContacts = async ({
   perPage = 10,
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
+  userId,//new
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
+
   const contactsQuery = ContactCollection.find();
   const contactsCount = await ContactCollection.find()
     .merge(contactsQuery)
     .countDocuments();
+  
 
   const contacts = await contactsQuery
     .skip(skip)
@@ -36,16 +39,24 @@ export const getContacts = async ({
 //   return contacts;
 // };
 
-export const getContactsById = async (id) => {
-  const contact = await ContactCollection.findById(id);
+export const getContactsById = async (id, userId) => {
+  const contact = await ContactCollection.findOne({  _id: id,
+    userId: userId,});
   return contact;
 };
 
 export const createContact = payload => ContactCollection.create(payload); //POST
 
-export const patchContact = async (_id, payload, options = {}) => {
-  const rawResults = await ContactCollection.findByIdAndUpdate({_id}, payload, {
-    // const rawResults = await ContactCollection.findOneAndUpdate({_id}, payload, {
+
+
+  export const patchContact = async (id, payload, options = {}) => {
+    const { userId } = options;
+  // const rawResults = await ContactCollection.findByIdAndUpdate({_id}, payload, {
+    const rawResults = await ContactCollection.findOneAndUpdate(  {
+      _id: id,
+      userId: userId,
+    },
+      payload, {
     new: true,
     includeResultMetadata: true,
     ...options,
@@ -58,4 +69,11 @@ export const patchContact = async (_id, payload, options = {}) => {
     
   }
 }
-export const deleteContact = (_id) => ContactCollection.findByIdAndDelete({ _id });
+export const deleteContact = async (id, userId) => {
+  const contact = await ContactCollection.findOneAndDelete({
+    _id: id,
+    userId: userId,
+  });
+return contact;
+};
+
