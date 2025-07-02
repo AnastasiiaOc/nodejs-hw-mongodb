@@ -1,4 +1,4 @@
-
+//server.js
 import express from "express";
 import cors from "cors";
 import pino from "pino-http";
@@ -17,6 +17,7 @@ export const setupServer = () => {
 
     app.use(cors());
     app.use(express.json())
+    app.use(cookieParser());
     app.use(pino({
         transport: {
             target: "pino-pretty"
@@ -32,11 +33,5 @@ export const setupServer = () => {
 }
 
 
-export const startServer = () => {
-    const app = express();
-  
-    app.use(express.json());
-    app.use(cors());
-    app.use(cookieParser());
-};
+
 
