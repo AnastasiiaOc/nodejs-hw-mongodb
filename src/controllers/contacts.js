@@ -5,23 +5,31 @@ import { parseSortParams } from "../utils/parseSortParams.js";
 import createHttpError from "http-errors";
 
   
-export const getContactsController = async (req, resp) => {  
+export const getContactsController = async (req, resp) => {
     // const paginationParams = parsePaginationParams(req.query);
+    // console.log("controller works");
+    // console.log("req.user:", req.user)
     const { page, perPage } = parsePaginationParams(req.query);
-    const {sortBy, sortOrder} = parseSortParams(req.query)
+    const { sortBy, sortOrder } = parseSortParams(req.query)
+    
+    const userId = req.user._id; //(we get userId from token)
+    if (!userId) {
+        throw createHttpError(
+        401, "Unauthorized"
+    )}
 
-    const data = await getContacts({ page, perPage, sortBy, sortOrder } );
+    const data = await getContacts({ userId, page, perPage, sortBy, sortOrder } );
         resp.json({
             status: 200,
             message: "Contacts are successfully found",
             data,
-        }); 
+        });
 };
 
 export const getContactsByIdController = async (req, resp, next) => {
     const { id } = req.params;
     const data = await getContactsById(id);
-    if (!data) {
+    if (!dat/a) {
         throw createHttpError(404, 'Contact not found');
     };
     resp.json({
