@@ -1,10 +1,19 @@
-
+// src/services/auth.js
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import createHttpError from 'http-errors';
 import { User } from "../db/models/User.js";
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
 import { Session } from '../db/models/Session.js';
+
+import jwt from 'jsonwebtoken';
+import { SMTP } from '../constants/index.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
+import { sendEmail } from '../utils/sendMail.js';
+
+import handlebars from 'handlebars';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
  export const registerUser = async (payload) => {
   
@@ -86,3 +95,49 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
   });
 };
 
+// Тепер ми готові створити сервіс для надсилання повідомлень
+export const requestResetToken = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+  const resetToken = jwt.sign(
+    {
+      sub: user._id,
+      email,
+    },
+    getEnvVar('JWT_SECRET'),
+    {
+      expiresIn: '15m',
+    },
+  );
+
+  const resetPasswordTemplatePath = path.join(
+    TEMPLATES_DIR,
+    'reset-password-email.hbs',
+  );
+
+  const templateSource = (
+    await fs.readFile(resetPasswordTemplatePath)
+  ).toString();
+
+  const template = handlebars.compile(templateSource);
+  const html = template({
+    name: user.name,
+    link: `${getEnvVar('APP_DOMAIN')}/reset-password?token=${resetToken}`,
+  });
+
+  await sendEmail({
+    from: getEnvVar(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Reset your password',
+    html,
+  });
+};
+
+
+// Тут також додається одна змінна оточення - JWT_SECRET, яка буде використовуватися для генерації підпису нашого токену. Значення у неї може бути довільним, Функція requestResetToken спочатку шукає користувача в колекції користувачів за вказаною електронною поштою. Якщо користувача не знайдено, викликається помилка з кодом 404 і повідомленням "User not found".
+// Якщо користувача знайдено, функція створює токен скидання пароля, який містить ідентифікатор користувача та його електронну пошту. Токен підписується секретом JWT і має термін дії 15 хвилин.
+// Після цього функція надсилає електронний лист користувачу, який містить посилання для скидання пароля з включеним створеним токеном.
+
+// За допомогою літералу {{}} в html коді ми вказуємо, які значення мають бути там відмальовані. Для того, щоб отримати шаблон, нам треба прочитати його контент із файла, передати в функцію handlebars.compile(). Після цього ми можемо передати в результат виконання цієї функції значення, що ми хочемо використати в шаблоні, і на виході отримаємо html, що може бути використаний для відправлення у листі.
