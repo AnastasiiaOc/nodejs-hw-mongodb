@@ -10,6 +10,8 @@ import { refreshUserSessionController } from "../controllers/auth.js";
 import { registerContactController } from '../controllers/auth.js';
 import { loginUserController } from "../controllers/auth.js";
 
+import { requestResetEmailSchema } from '../validation/auth.js';
+import { requestResetEmailController } from '../controllers/auth.js';
 
 const authRouter = Router();
 
@@ -30,8 +32,13 @@ authRouter.post('/logout', ctrlWrapper(logoutUserController));
 
 authRouter.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
+//creating route to drop the password
 
-
+authRouter.post(
+  '/request-reset-email',
+  validateBody(requestResetEmailSchema),
+  ctrlWrapper(requestResetEmailController),
+);
 
 export default authRouter;
 
