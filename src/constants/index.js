@@ -25,6 +25,14 @@ export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
 export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
 export const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 
+export const CLOUDINARY = {
+    CLOUD_NAME: 'CLOUD_NAME',
+    API_KEY: 'API_KEY',
+    API_SECRET: 'API_SECRET',
+  };
+
+
+//OK
 
 
 // destination (призначення): Цей параметр визначає, в яку директорію будуть зберігатися завантажені файли. Він реалізований як функція, яка отримує три аргументи: запит (req), файл (file) і функцію зворотного виклику (cb). Функція зворотного виклику використовується для передачі директорії, в яку слід зберегти файл. У даному випадку, цю директорію ми визначии заздалегідь у константі TEMP_UPLOAD_DIR, що вказує на тимчасову директорію для завантажень.
