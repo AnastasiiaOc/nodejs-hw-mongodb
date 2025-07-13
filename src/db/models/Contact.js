@@ -28,7 +28,8 @@ contactType:{
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-      },
+    },
+    photo: { type: String },
 
 },
 {

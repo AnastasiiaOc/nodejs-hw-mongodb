@@ -55,23 +55,31 @@ export const createContact = payload => ContactCollection.create(payload); //POS
   export const patchContact = async (id, payload, options = {}) => {
     const { userId } = options;
   // const rawResults = await ContactCollection.findByIdAndUpdate({_id}, payload, {
-    const rawResults = await ContactCollection.findOneAndUpdate(  {
+    const updatedContact = await ContactCollection.findOneAndUpdate(  {
       _id: id,
       userId: userId,
     },
       payload, {
     new: true,
-    includeResultMetadata: true,
+    // includeResultMetadata: true,
     ...options,
   });
 
-  if (!rawResults || !rawResults.value) return null;
-  return {
-    data: rawResults.value,
-    isNew:Boolean(rawResults?.lastErrorObject?.upserted),
+  // if (!rawResults || !rawResults.value) return null;
+  // return {
+  //   data: rawResults.value,
+  //   isNew:Boolean(rawResults?.lastErrorObject?.upserted),
     
-  }
+    // }
+    
+  if (!updatedContact) return null;
+  return {
+    student: updatedContact,
+    isNew: false,
+  };
 }
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const deleteContact = async (id, userId) => {
   const contact = await ContactCollection.findOneAndDelete({
     _id: id,
