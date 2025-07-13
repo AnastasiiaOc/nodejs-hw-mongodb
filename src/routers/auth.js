@@ -54,9 +54,6 @@ authRouter.post(
 export default authRouter;
 
 
-// •	password - обов’язково (памʼятайте, що пароль має бути захешованим за допомогою бібліотеки bcrypt)
-
-
 authRouter.post(
   '/reset-pwd',
   validateBody(resetPasswordSchema),
