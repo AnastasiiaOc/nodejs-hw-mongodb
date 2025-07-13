@@ -29,10 +29,9 @@ authRouter.post(
 );
 
 authRouter.post('/logout', ctrlWrapper(logoutUserController));
-
 authRouter.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
-//creating route to drop the password
+
 
 authRouter.post(
   '/request-reset-email',
@@ -43,5 +42,5 @@ authRouter.post(
 export default authRouter;
 
 
-// •	password - обов’язково (памʼятайте, що пароль має бути захешованим за допомогою бібліотеки bcrypt)
+
 
