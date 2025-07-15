@@ -86,7 +86,7 @@ export const patchContactsController = async (req, resp, next) => {
     resp.json({
         status: 200,
         message: "Successfully patched a contact!",
-        data: result
+        data: result.student
     })
 }
 
