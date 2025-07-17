@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: <назва вашого додатку>
+  title: <Contact list>
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -15,6 +15,7 @@ tags:
     description: Auth operations.
 servers:
   - url: http://localhost:3000
+  - url: https://nodejs-hw-mongodb-1-g3yf.onrender.com
   # - url: #посилання на задеплоєний сайт on render.com
 paths:
   /contacts/{id}:
