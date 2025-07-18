@@ -9,7 +9,7 @@ security:
 parameters:
   - in: query
     name: page
-    required: true
+    required: false
     schema:
       type: integer
       example: 10
